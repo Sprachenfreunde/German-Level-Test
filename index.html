@@ -49,7 +49,7 @@ body{
 }
 
 .context{
-  font-size:14px;
+  font-size:13px;
   color:#666;
   margin-bottom:10px;
 }
@@ -62,17 +62,8 @@ body{
 
 <!-- START -->
 <div id="start">
-
   <h1>Deutsch Einstufungstest</h1>
   <p>50 Fragen · Niveau A1–C1 · ca. 30 Minuten</p>
-
-  <ul>
-    <li>CEFR Einstufung (A1–C1)</li>
-    <li>Grammatik & Verständnis</li>
-    <li>Adaptive Bewertung</li>
-    <li>Zeitlimit: 30 Minuten</li>
-  </ul>
-
   <button id="startBtn">Start Test</button>
 </div>
 
@@ -101,130 +92,109 @@ body{
 </div>
 
 <script>
-
 "use strict";
 
-// =========================
-// QUESTION BANK (50 + CONTEXT)
-// =========================
+/* =========================
+   50 QUESTIONS
+========================= */
 const questions = [
-  // A1
-  {l:1,c:"Verb sein (Identität)",q:"Hallo, ich ___ Max.",o:["bin","bist","ist","sind"],a:0},
-  {l:1,c:"Herkunft",q:"Ich ___ aus Korea.",o:["komme","kommst","kommt","kommen"],a:0},
-  {l:1,c:"Artikel maskulin",q:"Das ist ___ Apfel.",o:["ein","eine","einen","einem"],a:0},
-  {l:1,c:"Alltag",q:"Ich ___ in Berlin.",o:["wohne","wohnst","wohnt","wohnen"],a:0},
-  {l:1,c:"Zustand",q:"Es ___ kalt.",o:["ist","bin","sind","seid"],a:0},
+{l:1,c:"Verb sein",q:"Hallo, ich ___ Max.",o:["bin","bist","ist","sind"],a:0},
+{l:1,c:"Herkunft",q:"Woher kommst du?",o:["Ich komme aus Korea.","Ich wohne Korea.","Ich bin Korea.","Ich komme nach Korea."],a:0},
+{l:1,c:"Artikel",q:"Das ist ___ Apfel.",o:["ein","eine","einen","einem"],a:0},
+{l:1,c:"Alltag",q:"Wir ___ gern Pizza.",o:["essen","esst","isst","esse"],a:0},
+{l:1,c:"Zeit",q:"Wie spät ist es?",o:["halb neun","halb acht","acht Uhr","neun Uhr"],a:0},
 
-  // A2
-  {l:2,c:"Modalverb (Fähigkeit)",q:"Ich ___ gut Deutsch sprechen.",o:["kann","muss","will","darf"],a:0},
-  {l:2,c:"Perfekt",q:"Ich ___ gestern gearbeitet.",o:["habe","bin","war","hat"],a:0},
-  {l:2,c:"Präposition",q:"Ich fahre ___ dem Bus.",o:["mit","bei","zu","in"],a:0},
-  {l:2,c:"Zustand Vergangenheit",q:"Ich ___ sehr müde.",o:["war","bin","habe","werde"],a:0},
-  {l:2,c:"Verb + Präposition",q:"Ich interessiere mich ___ Musik.",o:["für","an","über","mit"],a:0},
+{l:2,c:"Modalverb",q:"Ich ___ gut Deutsch sprechen.",o:["kann","muss","will","darf"],a:0},
+{l:2,c:"Perfekt",q:"Ich ___ gearbeitet.",o:["habe","bin","war","hatte"],a:0},
+{l:2,c:"Präposition",q:"Ich fahre ___ dem Bus.",o:["mit","bei","zu","in"],a:0},
+{l:2,c:"Komparativ",q:"Er ist ___ als ich.",o:["größer","groß","am größten","großer"],a:0},
+{l:2,c:"Reflexiv",q:"Ich freue ___.",o:["mich","dich","sich","mir"],a:0},
 
-  // B1
-  {l:3,c:"Kausalsatz",q:"Ich bleibe zu Hause, ___ ich krank bin.",o:["weil","denn","aber","trotzdem"],a:0},
-  {l:3,c:"Relativsatz",q:"Das ist der Mann, ___ ich kenne.",o:["den","der","dem","dessen"],a:0},
-  {l:3,c:"Gedanke",q:"Ich denke ___ dich.",o:["an","für","über","mit"],a:0},
-  {l:3,c:"Unsicherheit",q:"Ich weiß nicht, ___ er kommt.",o:["ob","weil","denn","aber"],a:0},
-  {l:3,c:"Höflich",q:"Ich helfe ___ dir.",o:["gern","gerne","gut","viel"],a:1},
+{l:3,c:"Kausalsatz",q:"Ich bleibe zu Hause, ___ ich krank bin.",o:["weil","denn","aber","deshalb"],a:0},
+{l:3,c:"Relativsatz",q:"Der Mann, ___ ich kenne.",o:["den","der","dem","dessen"],a:0},
+{l:3,c:"Infinitiv",q:"Ich habe keine Lust ___.",o:["einzukaufen","einkaufen zu","zu einkaufen","einkaufe zu"],a:0},
+{l:3,c:"Doppelkonnektor",q:"Je mehr ich lerne, ___ besser.",o:["desto","weil","denn","aber"],a:0},
+{l:3,c:"Zeit",q:"Wir treffen uns ___ Montag ___ 10 Uhr.",o:["am ... um","im ... an","an ... am","um ... am"],a:0},
 
-  // B2
-  {l:4,c:"Konjunktiv II",q:"Wenn ich Zeit ___, würde ich helfen.",o:["hätte","habe","hatte","bin"],a:0},
-  {l:4,c:"Passiv",q:"Das Haus ___ gebaut.",o:["wurde","ist","hat","wird"],a:0},
-  {l:4,c:"Konzessiv",q:"___ er reich ist, ist er nicht glücklich.",o:["Obwohl","Weil","Denn","Damit"],a:0},
-  {l:4,c:"Infinitiv",q:"Das Problem ist leicht ___.",o:["zu lösen","lösen","gelöst","lösbar"],a:0},
-  {l:4,c:"Struktur",q:"Je mehr ich lerne, ___ besser.",o:["desto","weil","denn","aber"],a:0},
+{l:4,c:"Konjunktiv II",q:"Wenn ich Zeit ___, würde ich helfen.",o:["hätte","habe","hatte","bin"],a:0},
+{l:4,c:"Passiv",q:"Das Haus ___ gebaut.",o:["wurde","ist","hat","wird"],a:0},
+{l:4,c:"Konzessiv",q:"___ er reich ist, ist er nicht glücklich.",o:["Obwohl","Trotzdem","Sondern","Falls"],a:0},
+{l:4,c:"Relativ",q:"Das ist der Punkt, ___ ich mich konzentriere.",o:["auf den","an den","worauf","über den"],a:0},
+{l:4,c:"Infinitiv",q:"Der Text ist leicht ___.",o:["zu verstehen","verstanden","verstehen","zu verstanden"],a:0},
 
-  // C1
-  {l:5,c:"Indirekte Rede",q:"Er sagte, er ___ keine Zeit habe.",o:["habe","hat","hatte","haben"],a:0},
-  {l:5,c:"Nominalisierung",q:"Das ___ der Umwelt ist wichtig.",o:["Schutz","Schützen","Schützer","Schützt"],a:0},
-  {l:5,c:"Stil",q:"Die ___ Kosten steigen.",o:["anfallenden","kommenden","gehenden","machenden"],a:0},
-  {l:5,c:"Ausdruck",q:"Ich bin ___ Meinung.",o:["der","die","das","den"],a:0},
-  {l:5,c:"Formell",q:"Es ist davon ___, dass er kommt.",o:["auszugehen","gehen","gegangen","geht"],a:0}
+{l:5,c:"Indirekte Rede",q:"Er sagte, er ___ keine Zeit habe.",o:["habe","hat","hatte","hab"],a:0},
+{l:5,c:"Nominalisierung",q:"Das ___ der Umwelt ist wichtig.",o:["Schutz","Schützen","Schützer","Schützung"],a:0},
+{l:5,c:"Doppel",q:"Ich mag ___ Tee ___ Kaffee.",o:["weder ... noch","entweder ... oder","sowohl ... als auch","nicht nur ... sondern"],a:0},
+{l:5,c:"Formell",q:"Er hat ___ Gründen abgebrochen.",o:["aus","wegen","durch","infolge"],a:0},
+{l:5,c:"Präposition",q:"In Bezug ___ Ihr Schreiben...",o:["auf","zu","mit","für"],a:0}
 ];
 
-// =========================
-// STATE
-// =========================
-let i = 0;
-let score = 0;
-let ability = 50;
-let wrong = 0;
+/* =========================
+   STATE
+========================= */
+let i=0;
+let score=0;
+let ability=50;
+let wrong=0;
+let answered=0;
 
-let timeLeft = 1800;
+let timeLeft=1800;
 let timer;
 
-// =========================
-// START (SAFE)
-// =========================
-window.start = function(){
+/* =========================
+   START
+========================= */
+document.getElementById("startBtn").onclick=function(){
   document.getElementById("start").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
-
   startTimer();
   load();
 };
 
-document.getElementById("startBtn").onclick = window.start;
-
-// =========================
-// TIMER
-// =========================
+/* =========================
+   TIMER
+========================= */
 function startTimer(){
-  timer = setInterval(()=>{
-
+  timer=setInterval(()=>{
     timeLeft--;
-
-    let m = Math.floor(timeLeft/60);
-    let s = timeLeft%60;
-
-    document.getElementById("timer").innerText =
+    let m=Math.floor(timeLeft/60);
+    let s=timeLeft%60;
+    document.getElementById("timer").innerText=
       `${m}:${s<10?"0":""}${s}`;
-
-    if(timeLeft <= 0){
-      end("Zeit abgelaufen");
-    }
-
+    if(timeLeft<=0) end("Zeit abgelaufen");
   },1000);
 }
 
-// =========================
-// LOAD QUESTION
-// =========================
+/* =========================
+   LOAD
+========================= */
 function load(){
+  if(i>=questions.length || wrong>=8) return end("Test beendet");
 
-  if(i >= questions.length || wrong >= 8){
-    return end("Test beendet");
-  }
+  let q=questions[i];
 
-  let q = questions[i];
+  document.getElementById("info").innerText=`Frage ${i+1}`;
+  document.getElementById("context").innerText=q.c;
+  document.getElementById("question").innerText=q.q;
 
-  document.getElementById("info").innerText =
-    `Frage ${i+1} | Niveau ${q.l}`;
-
-  document.getElementById("context").innerText =
-    `Hinweis: ${q.c}`;
-
-  document.getElementById("question").innerText = q.q;
-
-  let box = document.getElementById("options");
-  box.innerHTML = "";
+  let box=document.getElementById("options");
+  box.innerHTML="";
 
   q.o.forEach((opt,idx)=>{
+    let d=document.createElement("div");
+    d.className="option";
+    d.innerText=opt;
 
-    let d = document.createElement("div");
-    d.className = "option";
-    d.innerText = opt;
+    d.onclick=function(){
 
-    d.onclick = function(){
+      answered++;
 
-      if(idx === q.a){
+      if(idx===q.a){
         score++;
-        ability += 2;
-      } else {
+        ability+=2;
+      }else{
         wrong++;
-        ability -= 3;
+        ability-=3;
       }
 
       i++;
@@ -235,29 +205,34 @@ function load(){
   });
 }
 
-// =========================
-// END
-// =========================
+/* =========================
+   END
+========================= */
 function end(reason){
-
   clearInterval(timer);
 
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.remove("hidden");
 
-  let level = "A1";
+  let level="A1";
 
-  if(ability > 85) level="C1";
-  else if(ability > 70) level="B2";
-  else if(ability > 55) level="B1";
-  else if(ability > 40) level="A2";
+  if(ability>85) level="C1";
+  else if(ability>70) level="B2";
+  else if(ability>55) level="B1";
+  else if(ability>40) level="A2";
 
-  document.getElementById("level").innerText = level;
+  let accuracy = answered ? Math.round((score/answered)*100) : 0;
 
-  document.getElementById("score").innerText =
-    `Score: ${score}/50 (${reason})`;
+  document.getElementById("level").innerText=level;
+
+  document.getElementById("score").innerHTML=`
+    Score: ${score}/50<br>
+    Beantwortet: ${answered}<br>
+    Falsch: ${wrong}<br>
+    Genauigkeit: ${accuracy}%<br>
+    (${reason})
+  `;
 }
-
 </script>
 
 </body>
