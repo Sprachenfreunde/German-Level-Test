@@ -1,222 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deutsch Einstufungstest | German Level Test</title>
-    <style>
-        :root { --primary: #003366; --accent: #d9534f; --bg: #f4f7f9; --text: #2c3e50; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); padding: 20px; display: flex; justify-content: center; color: var(--text); }
-        #quiz-container { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 700px; width: 100%; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #eee; }
-        .progress-info { font-weight: 600; color: var(--primary); }
-        #timer { font-size: 1.2rem; font-weight: 700; color: var(--accent); background: #fff5f5; padding: 5px 15px; border-radius: 20px; border: 1px solid #ffc1c1; }
-        .question-box { min-height: 100px; margin-bottom: 30px; }
-        .question-text { font-size: 1.3rem; font-weight: 600; line-height: 1.5; color: #1a1a1a; }
-        .options { display: grid; gap: 12px; }
-        .opt-btn { padding: 16px 20px; border: 1px solid #e0e0e0; border-radius: 10px; background: #fff; cursor: pointer; transition: all 0.2s; text-align: left; font-size: 1.05rem; }
-        .opt-btn:hover { background: #f0f7ff; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-        #result { display: none; text-align: center; padding: 20px 0; }
-        .level-badge { font-size: 4rem; color: var(--primary); font-weight: 900; margin: 15px 0; }
-        .score-info { font-size: 1.2rem; margin-bottom: 10px; color: #555; font-weight: bold; }
-        .desc { font-size: 1.1rem; line-height: 1.7; color: #444; margin-bottom: 35px; text-align: left; background: #f9f9f9; padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary); }
-        .desc strong { color: var(--primary); font-size: 1.2rem; }
-        .desc small { display: block; margin-top: 10px; color: #777; font-style: italic; border-top: 1px solid #ddd; padding-top: 10px; }
-        .retry-btn { padding: 15px 40px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: 0.3s; }
-        .retry-btn:hover { background: #002244; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Einstufungstest</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#f4f7f9;
+  display:flex;
+  justify-content:center;
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:750px;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.option{
+  padding:12px;
+  border:1px solid #ddd;
+  margin:8px 0;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.option:hover{
+  background:#eef5ff;
+}
+
+.hidden{ display:none; }
+
+.level{
+  font-size:40px;
+  font-weight:bold;
+  color:#003366;
+}
+
+#timer{
+  font-weight:bold;
+  color:#d9534f;
+}
+
+.context{
+  font-size:14px;
+  color:#666;
+  margin-bottom:10px;
+}
+</style>
 </head>
+
 <body>
 
-<div id="quiz-container">
-    <div id="quiz-box">
-        <div class="header">
-            <div class="progress-info">Frage / Question <span id="current-idx">1</span> of 50</div>
-            <div id="timer">30:00</div>
-        </div>
-        <div class="question-box">
-            <div class="question-text" id="question-text">Lädt... / Loading...</div>
-        </div>
-        <div class="options" id="options-container"></div>
-    </div>
+<div class="container">
 
-    <div id="result">
-        <h2 style="margin-top:0;">Ihr Ergebnis / Your Result</h2>
-        <p class="score-info" id="result-score"></p>
-        <div class="level-badge" id="result-level"></div>
-        <div class="desc" id="result-msg"></div>
-        <button class="retry-btn" onclick="location.reload()">Test neu starten / Restart Test</button>
-    </div>
+<!-- START -->
+<div id="start">
+
+  <h1>Deutsch Einstufungstest</h1>
+  <p>50 Fragen · Niveau A1–C1 · ca. 30 Minuten</p>
+
+  <ul>
+    <li>CEFR Einstufung (A1–C1)</li>
+    <li>Grammatik & Verständnis</li>
+    <li>Adaptive Bewertung</li>
+    <li>Zeitlimit: 30 Minuten</li>
+  </ul>
+
+  <button id="startBtn">Start Test</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="hidden">
+
+  <div>
+    <span id="info"></span> |
+    <span id="timer"></span>
+  </div>
+
+  <div class="context" id="context"></div>
+
+  <h2 id="question"></h2>
+  <div id="options"></div>
+
+</div>
+
+<!-- RESULT -->
+<div id="result" class="hidden">
+  <h2>Ergebnis</h2>
+  <div class="level" id="level"></div>
+  <p id="score"></p>
+</div>
+
 </div>
 
 <script>
-    const quizData = [
-        // A1
-        { q: "Wählen Sie die richtige Form: 'Hallo, ich ___ Max.'", a: ["bin", "bist", "ist", "sind"], cor: 0 },
-        { q: "Was ist die richtige Antwort? 'Woher kommst du?'", a: ["Ich komme aus Korea.", "Ich wohne in Korea.", "Ich bin Korea.", "Ich komme nach Korea."], cor: 0 },
-        { q: "Ergänzen Sie den Artikel: 'Das ist ___ Apfel.' (m.)", a: ["ein", "eine", "einen", "einem"], cor: 0 },
-        { q: "Welches Verb passt? 'Wir ___ gern Pizza.'", a: ["essen", "esst", "isst", "esse"], cor: 0 },
-        { q: "Wie spät ist es? (08:30 Uhr)", a: ["halb neun", "halb acht", "acht Uhr", "neun nach acht"], cor: 0 },
-        { q: "Verneinen Sie den Satz: 'Ich habe ein Auto.'", a: ["Ich habe kein Auto.", "Ich habe nicht Auto.", "Ich nicht habe Auto.", "Ich habe keine Auto."], cor: 0 },
-        { q: "Possessivartikel: 'Das ist mein Bruder. ___ Name ist Paul.'", a: ["Sein", "Ihr", "Mein", "Dein"], cor: 0 },
-        { q: "Welcher Satz ist korrekt?", a: ["Heute gehe ich ins Kino.", "Heute ich gehe ins Kino.", "Ich heute gehe ins Kino.", "Gehe ich heute ins Kino."], cor: 0 },
-        { q: "Ergänzen Sie die Präposition: 'Ich fahre ___ dem Zug.'", a: ["mit", "bei", "zu", "in"], cor: 0 },
-        { q: "Frage nach dem Ort: '___ ist die Toilette?'", a: ["Wo", "Wer", "Was", "Wie"], cor: 0 },
-        // A2
-        { q: "Modalverb (Fähigkeit): 'Ich ___ gut Deutsch sprechen.'", a: ["kann", "muss", "will", "darf"], cor: 0 },
-        { q: "Perfekt: 'Ich ___ gestern nach Hause gegangen.'", a: ["bin", "habe", "war", "hatte"], cor: 0 },
-        { q: "Komparativ: 'Mein Bruder ist ___ als ich.' (groß)", a: ["größer", "groß", "am größten", "großer"], cor: 0 },
-        { q: "Trennbares Verb: 'Ich ___ jeden Morgen um 7 Uhr ___.'", a: ["stehe...auf", "aufstehe", "auf...stehe", "stehe...aus"], cor: 0 },
-        { q: "Relativsatz: 'Das ist der Mann, ___ ich gesehen habe.'", a: ["den", "der", "dem", "dessen"], cor: 0 },
-        { q: "Nebensatz (Kausal): 'Ich bin müde, ___ ich viel gearbeitet habe.'", a: ["weil", "denn", "aber", "deshalb"], cor: 0 },
-        { q: "Reflexivpronomen: 'Ich freue ___ auf den Urlaub.'", a: ["mich", "dich", "sich", "mir"], cor: 0 },
-        { q: "Pluralform: Wie heißt der Plural von 'das Buch'?", a: ["die Bücher", "die Buchs", "die Büchern", "die Buche"], cor: 0 },
-        { q: "Adjektivdeklination: 'Ich trinke einen heiß___ Tee.' (Mask, Akk)", a: ["en", "er", "es", "e"], cor: 0 },
-        { q: "Höfliche Bitte: '___ ich das Fenster öffnen?'", a: ["Darf", "Muss", "Soll", "Will"], cor: 0 },
-        // B1
-        { q: "Passiv Präteritum: 'Das Haus ___ im Jahr 1990 ___.'", a: ["wurde...gebaut", "ist...gebaut", "hat...gebaut", "wird...bauen"], cor: 0 },
-        { q: "Konjunktiv II: 'Wenn ich Zeit ___, ___ ich dir helfen.'", a: ["hätte...würde", "habe...werde", "hatte...würde", "hätte...werde"], cor: 0 },
-        { q: "Adverbialer Anschluss: 'Ich habe kein Geld, ___ kaufe ich das Auto.'", a: ["trotzdem", "deshalb", "weil", "obwohl"], cor: 0 },
-        { q: "Passiv mit Modalverb: 'Das Problem ___ gelöst ___.'", a: ["muss...werden", "wird...müssen", "ist...worden", "muss...worden"], cor: 0 },
-        { q: "Verben mit Präpositionen: 'Ich interessiere mich ___ Politik.'", a: ["für", "an", "über", "auf"], cor: 0 },
-        { q: "Nebensatz am Anfang: '___ ich krank war, konnte ich nicht kommen.'", a: ["Da", "Denn", "Deshalb", "Darum"], cor: 0 },
-        { q: "Infinitiv mit zu: 'Ich habe keine Lust, heute ___.' (einkaufen)", a: ["einkaufen zu", "zu einkaufen", "einzukaufen", "einkaufe zu"], cor: 2 },
-        { q: "Doppelkonjunktion: 'Je mehr ich lerne, ___ ___ verstehe ich.'", a: ["desto mehr", "umso viel", "desto viel", "als mehr"], cor: 0 },
-        { q: "Temporale Präpositionen: 'Wir treffen uns ___ Montag ___ 10 Uhr.'", a: ["am...um", "im...an", "an...am", "um...am"], cor: 0 },
-        { q: "Konjunktiv II (Höflichkeit): '___ Sie bitte so nett?'", a: ["Wären", "Sind", "Hätten", "Werden"], cor: 0 },
-        // B2
-        { q: "Nomen-Verb-Verbindung: 'Wir müssen eine Entscheidung ___.'", a: ["treffen", "machen", "haben", "tun"], cor: 0 },
-        { q: "Irreale Bedingung: 'Wenn du gekommen ___, ___ wir uns gesehen.'", a: ["wärest...hätten", "bist...haben", "wärst...haben", "hättest...wären"], cor: 0 },
-        { q: "Partizipialattribute: '___ am Bahnhof ___, rief er mich an.'", a: ["Angekommen", "Ankommend", "Ankommen", "Ankunft"], cor: 0 },
-        { q: "Futur II (Vermutung): 'Er ___ wohl den Bus ___ ___.'", a: ["wird...verpasst haben", "wird...verpassen", "hat...verpasst", "würde...haben"], cor: 0 },
-        { q: "Konzessivsätze: '___ er viel Geld hat, ist er nicht glücklich.'", a: ["Obwohl", "Trotzdem", "Sondern", "Falls"], cor: 0 },
-        { q: "Relativsatz mit Präposition: 'Das ist der Punkt, ___ ich mich konzentriere.'", a: ["auf den", "an den", "worauf", "über den"], cor: 0 },
-        { q: "Ersatzform des Passivs: 'Der Text ist leicht ___.'", a: ["zu verstehen", "verstanden", "verstehen", "zu verstanden"], cor: 0 },
-        { q: "Pronominaladverbien: 'Ich rate dir ___, mehr Sport zu treiben.'", a: ["dazu", "dafür", "darum", "davon"], cor: 0 },
-        { q: "Partizip I: 'Die ___ Sonne blendet mich.' (scheinen)", a: ["scheinende", "geschienene", "scheinend", "scheinen"], cor: 0 },
-        { q: "Feste Wendung: 'Es kommt ___ ___, ob wir wandern gehen.'", a: ["darauf an", "darüber nach", "daran teil", "davon aus"], cor: 0 },
-        // C1
-        { q: "Nominalisierung: 'Das ___ der Umwelt ist ein wichtiges Thema.'", a: ["Schützen", "Schutz", "Schützer", "Schützung"], cor: 0 },
-        { q: "Indirekte Rede: 'Er sagte, er ___ keine Zeit.'", a: ["habe", "hat", "hätte", "hab"], cor: 0 },
-        { q: "Präpositional-Kausal: 'Er hat ___ gesundheitlichen Gründen abgebrochen.'", a: ["aus", "wegen", "durch", "infolge"], cor: 0 },
-        { q: "Erweitertes Attribut: 'Ein ___ Problem.' (nicht vorhergesehen)", a: ["unvorhergesehenes", "unvorhergesehene", "unvorhergesehenen", "unvorhergesehener"], cor: 0 },
-        { q: "Doppelkonnektor: 'Ich mag ___ Tee ___ Kaffee.' (beides nicht)", a: ["weder...noch", "entweder...oder", "sowohl...als auch", "nicht nur...sondern"], cor: 0 },
-        { q: "Genitiv: '___ des Regens sind wir zu Hause geblieben.'", a: ["Wegen", "Trotz", "Während", "Infolge"], cor: 0 },
-        { q: "Lexik: 'Er hat die Prüfung mit Erfolg ___.'", a: ["bestanden", "gemacht", "geschafft", "erfolgt"], cor: 0 },
-        { q: "Diplomatische Ablehnung: 'Ich ___ ja gerne, aber...'", a: ["würده", "werde", "soll", "bin"], cor: 0 },
-        { q: "Fachsprache: 'Die ___ Kosten sind enorm.' (entstehen)", a: ["anfallenden", "kommenden", "machenden", "gehenden"], cor: 0 },
-        { q: "Präposition: 'In Bezug ___ Ihr Schreiben...'", a: ["auf", "zu", "mit", "für"], cor: 0 }
-    ];
 
-    let currentIdx = 0;
-    let score = 0;
-    let continuousWrong = 0;
-    const MAX_CONTINUOUS_WRONG = 5; 
-    let timeLeft = 1800; 
-    let timerInterval;
+"use strict";
 
-    function startTimer() {
-        const timerEl = document.getElementById('timer');
-        timerInterval = setInterval(() => {
-            let min = Math.floor(timeLeft / 60);
-            let sec = timeLeft % 60;
-            timerEl.innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                endQuiz("Time Up / Zeit abgelaufen");
-            }
-            timeLeft--;
-        }, 1000);
+// =========================
+// QUESTION BANK (50 + CONTEXT)
+// =========================
+const questions = [
+  // A1
+  {l:1,c:"Verb sein (Identität)",q:"Hallo, ich ___ Max.",o:["bin","bist","ist","sind"],a:0},
+  {l:1,c:"Herkunft",q:"Ich ___ aus Korea.",o:["komme","kommst","kommt","kommen"],a:0},
+  {l:1,c:"Artikel maskulin",q:"Das ist ___ Apfel.",o:["ein","eine","einen","einem"],a:0},
+  {l:1,c:"Alltag",q:"Ich ___ in Berlin.",o:["wohne","wohnst","wohnt","wohnen"],a:0},
+  {l:1,c:"Zustand",q:"Es ___ kalt.",o:["ist","bin","sind","seid"],a:0},
+
+  // A2
+  {l:2,c:"Modalverb (Fähigkeit)",q:"Ich ___ gut Deutsch sprechen.",o:["kann","muss","will","darf"],a:0},
+  {l:2,c:"Perfekt",q:"Ich ___ gestern gearbeitet.",o:["habe","bin","war","hat"],a:0},
+  {l:2,c:"Präposition",q:"Ich fahre ___ dem Bus.",o:["mit","bei","zu","in"],a:0},
+  {l:2,c:"Zustand Vergangenheit",q:"Ich ___ sehr müde.",o:["war","bin","habe","werde"],a:0},
+  {l:2,c:"Verb + Präposition",q:"Ich interessiere mich ___ Musik.",o:["für","an","über","mit"],a:0},
+
+  // B1
+  {l:3,c:"Kausalsatz",q:"Ich bleibe zu Hause, ___ ich krank bin.",o:["weil","denn","aber","trotzdem"],a:0},
+  {l:3,c:"Relativsatz",q:"Das ist der Mann, ___ ich kenne.",o:["den","der","dem","dessen"],a:0},
+  {l:3,c:"Gedanke",q:"Ich denke ___ dich.",o:["an","für","über","mit"],a:0},
+  {l:3,c:"Unsicherheit",q:"Ich weiß nicht, ___ er kommt.",o:["ob","weil","denn","aber"],a:0},
+  {l:3,c:"Höflich",q:"Ich helfe ___ dir.",o:["gern","gerne","gut","viel"],a:1},
+
+  // B2
+  {l:4,c:"Konjunktiv II",q:"Wenn ich Zeit ___, würde ich helfen.",o:["hätte","habe","hatte","bin"],a:0},
+  {l:4,c:"Passiv",q:"Das Haus ___ gebaut.",o:["wurde","ist","hat","wird"],a:0},
+  {l:4,c:"Konzessiv",q:"___ er reich ist, ist er nicht glücklich.",o:["Obwohl","Weil","Denn","Damit"],a:0},
+  {l:4,c:"Infinitiv",q:"Das Problem ist leicht ___.",o:["zu lösen","lösen","gelöst","lösbar"],a:0},
+  {l:4,c:"Struktur",q:"Je mehr ich lerne, ___ besser.",o:["desto","weil","denn","aber"],a:0},
+
+  // C1
+  {l:5,c:"Indirekte Rede",q:"Er sagte, er ___ keine Zeit habe.",o:["habe","hat","hatte","haben"],a:0},
+  {l:5,c:"Nominalisierung",q:"Das ___ der Umwelt ist wichtig.",o:["Schutz","Schützen","Schützer","Schützt"],a:0},
+  {l:5,c:"Stil",q:"Die ___ Kosten steigen.",o:["anfallenden","kommenden","gehenden","machenden"],a:0},
+  {l:5,c:"Ausdruck",q:"Ich bin ___ Meinung.",o:["der","die","das","den"],a:0},
+  {l:5,c:"Formell",q:"Es ist davon ___, dass er kommt.",o:["auszugehen","gehen","gegangen","geht"],a:0}
+];
+
+// =========================
+// STATE
+// =========================
+let i = 0;
+let score = 0;
+let ability = 50;
+let wrong = 0;
+
+let timeLeft = 1800;
+let timer;
+
+// =========================
+// START (SAFE)
+// =========================
+window.start = function(){
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+
+  startTimer();
+  load();
+};
+
+document.getElementById("startBtn").onclick = window.start;
+
+// =========================
+// TIMER
+// =========================
+function startTimer(){
+  timer = setInterval(()=>{
+
+    timeLeft--;
+
+    let m = Math.floor(timeLeft/60);
+    let s = timeLeft%60;
+
+    document.getElementById("timer").innerText =
+      `${m}:${s<10?"0":""}${s}`;
+
+    if(timeLeft <= 0){
+      end("Zeit abgelaufen");
     }
 
-    function loadQuestion() {
-        if (currentIdx >= quizData.length) {
-            endQuiz("Test Completed / Abgeschlossen");
-            return;
-        }
+  },1000);
+}
 
-        const q = quizData[currentIdx];
-        document.getElementById('current-idx').innerText = currentIdx + 1;
-        document.getElementById('question-text').innerText = q.q;
-        const container = document.getElementById('options-container');
-        container.innerHTML = "";
+// =========================
+// LOAD QUESTION
+// =========================
+function load(){
 
-        q.a.forEach((opt, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'opt-btn';
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(index);
-            container.appendChild(btn);
-        });
-    }
+  if(i >= questions.length || wrong >= 8){
+    return end("Test beendet");
+  }
 
-    function checkAnswer(selected) {
-        if (selected === quizData[currentIdx].cor) {
-            score++;
-            continuousWrong = 0;
-        } else {
-            continuousWrong++;
-        }
+  let q = questions[i];
 
-        if (continuousWrong >= MAX_CONTINUOUS_WRONG) {
-            endQuiz("Target Level Identified / Niveau erreicht");
-            return;
-        }
+  document.getElementById("info").innerText =
+    `Frage ${i+1} | Niveau ${q.l}`;
 
-        currentIdx++;
-        loadQuestion();
-    }
+  document.getElementById("context").innerText =
+    `Hinweis: ${q.c}`;
 
-    function endQuiz(msg) {
-        clearInterval(timerInterval);
-        document.getElementById('quiz-box').style.display = 'none';
-        const resDiv = document.getElementById('result');
-        resDiv.style.display = 'block';
-        
-        let level = "A1";
-        let message = "";
-        
-        if (score >= 45) {
-            level = "C1";
-            message = `<strong>Exzellente Kenntnisse!</strong><br>
-                       Sie können komplexe Texte verstehen und sich spontan und fließend ausdrücken. 
-                       Wir empfehlen Ihnen unseren Oberstufenkurs (C1).
-                       <small>Advanced level. You can understand complex texts and express yourself fluently. We recommend our C1 Advanced course.</small>`;
-        } else if (score >= 35) {
-            level = "B2";
-            message = `<strong>Gute Mittelstufenkenntnisse!</strong><br>
-                       Sie können die Hauptinhalte komplexer Texte verstehen und sich zu Themen detailliert äußern. 
-                       Der B2-Kurs ist ideal für Sie.
-                       <small>Upper-intermediate level. You can understand the main ideas of complex texts and speak in detail on various topics. B2 is ideal for you.</small>`;
-        } else if (score >= 25) {
-            level = "B1";
-            message = `<strong>Solide Grundkenntnisse!</strong><br>
-                       Sie können die Hauptpunkte verstehen, wenn klare Standardsprache verwendet wird. 
-                       Wir empfehlen Ihnen den B1-Kurs.
-                       <small>Intermediate level. You can understand main points of clear standard input on familiar matters. We recommend our B1 course.</small>`;
-        } else if (score >= 12) {
-            level = "A2";
-            message = `<strong>Grundlegende Kenntnisse!</strong><br>
-                       Sie können Sätze und häufig gebrauchte Ausdrücke verstehen. 
-                       Im A2-Kurs werden Sie Ihre Basiskenntnisse erweitern.
-                       <small>Pre-intermediate level. You can understand sentences and frequently used expressions. A2 will help you expand your basics.</small>`;
-        } else {
-            level = "A1";
-            message = `<strong>Herzlich willkommen!</strong><br>
-                       Sie fangen gerade erst an oder haben sehr geringe Vorkenntnisse. 
-                       Unser A1-Kurs für Anfänger ist der perfekte Start für Sie.
-                       <small>Beginner level. You are just starting or have very little prior knowledge. Our A1 course is the perfect start for you.</small>`;
-        }
+  document.getElementById("question").innerText = q.q;
 
-        document.getElementById('result-level').innerText = level;
-        document.getElementById('result-score').innerText = `Score: ${score} / 50 (${msg})`;
-        document.getElementById('result-msg').innerHTML = message;
-    }
+  let box = document.getElementById("options");
+  box.innerHTML = "";
 
-    window.onload = () => {
-        startTimer();
-        loadQuestion();
+  q.o.forEach((opt,idx)=>{
+
+    let d = document.createElement("div");
+    d.className = "option";
+    d.innerText = opt;
+
+    d.onclick = function(){
+
+      if(idx === q.a){
+        score++;
+        ability += 2;
+      } else {
+        wrong++;
+        ability -= 3;
+      }
+
+      i++;
+      load();
     };
+
+    box.appendChild(d);
+  });
+}
+
+// =========================
+// END
+// =========================
+function end(reason){
+
+  clearInterval(timer);
+
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  let level = "A1";
+
+  if(ability > 85) level="C1";
+  else if(ability > 70) level="B2";
+  else if(ability > 55) level="B1";
+  else if(ability > 40) level="A2";
+
+  document.getElementById("level").innerText = level;
+
+  document.getElementById("score").innerText =
+    `Score: ${score}/50 (${reason})`;
+}
+
 </script>
 
 </body>
