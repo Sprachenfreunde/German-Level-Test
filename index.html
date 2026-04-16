@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deutsch Einstufungstest</title>
+<title>Sprachenfreunde Einstufungstest</title>
 
 <style>
 body{
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background:#f4f7f9;
   display:flex;
   justify-content:center;
@@ -53,6 +53,41 @@ body{
   color:#666;
   margin-bottom:10px;
 }
+
+/* START SCREEN */
+#start{
+  text-align:center;
+}
+
+.brand{
+  font-size:36px;
+  font-weight:800;
+  color:#003366;
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+
+.title{
+  font-size:20px;
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+.subtitle{
+  font-size:14px;
+  color:#666;
+  margin-bottom:20px;
+}
+
+.start-btn{
+  padding:12px 25px;
+  font-size:16px;
+  border:none;
+  background:#003366;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
 </style>
 </head>
 
@@ -62,9 +97,12 @@ body{
 
 <!-- START -->
 <div id="start">
-  <h1>Deutsch Einstufungstest</h1>
-  <p>50 Fragen · Niveau A1–C1 · ca. 30 Minuten</p>
-  <button id="startBtn">Start Test</button>
+
+  <div class="brand">Sprachenfreunde</div>
+  <div class="title">Deutsch Einstufungstest</div>
+  <div class="subtitle">50 Fragen · Niveau A1–C1 · ca. 30 Minuten</div>
+
+  <button class="start-btn" id="startBtn">Start Test</button>
 </div>
 
 <!-- QUIZ -->
@@ -95,7 +133,7 @@ body{
 "use strict";
 
 /* =========================
-   50 QUESTIONS
+   QUESTIONS (50)
 ========================= */
 const questions = [
 {l:1,c:"Verb sein",q:"Hallo, ich ___ Max.",o:["bin","bist","ist","sind"],a:0},
