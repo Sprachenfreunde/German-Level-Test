@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sprachenfreunde Einstufungstest</title>
+    <title>Sprachenfreunde Placement Test</title>
     <style>
-        /* 기본 배경 및 폰트 설정 */
+        /* Base styles */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f9; display: flex; justify-content:center; padding: 10px; color: #333; margin: 0; min-height: 100vh; }
         .box { width: 100%; max-width: 800px; background:white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); box-sizing: border-box; align-self: center; }
         
-        /* ===== COVER PAGE ===== */
         #cover { text-align: center; width: 100%; }
         #logo { font-size: clamp(36px, 10vw, 64px); font-weight: bold; color: #003366; margin: 20px 0 10px; word-break: keep-all; }
         #subtitle { font-size: clamp(16px, 4vw, 24px); color: #555; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; line-height: 1.4; }
+        
         .rule-box { background-color: #f5f8fa; padding: 25px; border-radius: 15px; display: inline-block; text-align: left; margin-bottom: 40px; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.05); max-width: 95%; box-sizing: border-box; }
         .rule-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background-color: #003366; border-top-left-radius: 15px; border-bottom-left-radius: 15px; }
         .rule-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
         .rule-list { list-style: none; padding: 0; margin: 0; font-size: 16px; color: #444; line-height: 1.8; }
         .rule-list li { padding-left: 20px; position: relative; }
         .rule-list li::before { content: "•"; position: absolute; left: 0; color: #003366; font-weight: bold; }
+        
         .start-btn { width: 100%; max-width: 400px; padding: 20px; font-size: 20px; border: none; border-radius: 12px; cursor: pointer; background-color: #003366; color: white; font-weight: bold; transition: 0.3s; }
         .start-btn:hover { background-color: #002244; transform: translateY(-2px); }
 
-        /* ===== QUIZ PAGE ===== */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #eee; }
         #level-indicator { background: #003366; color: white; padding: 6px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; }
         #timer { color: #d9534f; font-weight: bold; font-size: 20px; }
         #qnum { font-weight: bold; color: #666; margin-bottom: 10px; display: block; }
+        
         .question { font-size: clamp(18px, 5vw, 24px); margin: 20px 0; line-height: 1.5; min-height: 60px; word-break: keep-all; }
         .answers-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .btn-ans { display: block; padding: 18px; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white; transition: 0.2s; font-size: 17px; text-align: left; }
         .btn-ans:hover { background: #eef6ff; border-color: #003366; }
 
-        /* ===== RESULT PAGE ===== */
         #result { display: none; text-align: center; }
         .level-result { font-size: 72px; font-weight: bold; color: #003366; margin: 20px 0; }
         .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
@@ -40,10 +40,8 @@
         .stat-label { font-size: 12px; color: #777; text-transform: uppercase; }
         .stat-value { font-size: 22px; font-weight: bold; }
 
-        /* 반응형 모바일 조정 (768px 미만) */
         @media (max-width: 767px) {
             .box { padding: 25px 15px; }
-            .header { margin-bottom: 15px; }
             .btn-ans { padding: 15px; font-size: 16px; }
         }
     </style>
@@ -57,10 +55,10 @@
         <div class="rule-box">
             <div class="rule-title">Test Rules:</div>
             <ul class="rule-list">
-                <li>50 Questions (Level A1 to C1)</li>
-                <li>Min. 5 correct answers per level to proceed</li>
-                <li>Auto-stop after 6 consecutive wrong answers</li>
-                <li>Duration: Max. 30 minutes</li>
+                <li>5 Levels (A1 to C1), 10 questions per level.</li>
+                <li><strong>Auto-Stop:</strong> Test ends if you get 2 wrong answers in a single level.</li>
+                <li><strong>Level Certification:</strong> Min. 6 correct answers required to pass a level.</li>
+                <li><strong>Time Limit:</strong> Max. 30 minutes.</li>
             </ul>
         </div>
         <br>
@@ -69,30 +67,37 @@
 
     <div id="quiz" style="display:none;">
         <div class="header">
-            <div id="level-indicator">Niveau: A1</div>
+            <div id="level-indicator">Level: A1</div>
             <div id="timer">30:00</div>
         </div>
-        <span id="qnum">Frage 1/50</span>
+        <span id="qnum">Question 1/50</span>
         <div class="question" id="question"></div>
         <div class="answers-grid" id="answers"></div>
     </div>
 
     <div id="result">
         <h2 style="color:#666;">Ihr Ergebnis / Your Result</h2>
-        <div class="level-result" id="final-level">A1</div>
+        <div class="level-result" id="final-level">A0</div>
         <div class="stats-container">
-            <div class="stat-card"><span class="stat-label">Score</span><br><span class="stat-value" id="res-score">0/50</span></div>
-            <div class="stat-card"><span class="stat-label">Questions</span><br><span class="stat-value" id="res-total">0</span></div>
+            <div class="stat-card">
+                <span class="stat-label">Total Score</span><br>
+                <span class="stat-value" id="res-score">0/50</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Progress</span><br>
+                <span class="stat-value" id="res-total">0</span>
+            </div>
         </div>
-        <button class="start-btn" onclick="location.reload()" style="background:#666;">Restart</button>
+        <button class="start-btn" onclick="location.reload()" style="background:#666;">Restart Test</button>
     </div>
 </div>
 
 <script>
+// Quiz data (German only)
 const quizData = [
-    // A1 (1-10)
+    // A1 (0-9)
     {q:"Hallo, ich ___ Max.", a:["bist","bin","ist","sind"], c:1},
-    {q:"\"Woher kommst du?\" – \"Ich ___ Korea.\"", a:["bin","wohne","komme aus","komme nach"], c:2},
+    {q:"\"Woher kommst du?\" – \"Ich ___ Deutschland.\"", a:["bin","wohne","komme aus","komme nach"], c:2},
     {q:"Das ist ___ Apfel.", a:["eine","en","einem","ein"], c:3},
     {q:"Wir ___ gern Pizza.", a:["essen","esst","isst","esse"], c:0},
     {q:"Wie spät ist es? (08:30)", a:["halb acht","halb neun","acht Uhr","neun Uhr"], c:1},
@@ -101,7 +106,7 @@ const quizData = [
     {q:"Heute ___ ich ins Kino.", a:["gehen","gehst","geht","gehe"], c:3},
     {q:"Ich fahre ___ dem Zug zur Arbeit.", a:["bei","mit","zu","in"], c:1},
     {q:"Entschuldigung, ___ ist die Toilette?", a:["wer","was","wo","wie"], c:2},
-    // A2 (11-20)
+    // A2 (10-19)
     {q:"Ich ___ gut Deutsch sprechen, weil ich viel gelernt habe.", a:["muss","will","kann","darf"], c:2},
     {q:"Gestern ___ ich schon früh nach Hause gegangen.", a:["habe","bin","war","hatte"], c:1},
     {q:"Mein Bruder ist 1,90 m. Er ist ___ als ich.", a:["größer","groß","am größten","am großsten"], c:0},
@@ -112,7 +117,7 @@ const quizData = [
     {q:"\"Dort liegen viele ___.\"", a:["Buchs","Büchern","Bücher","Buche"], c:2},
     {q:"Ich trinke gerne einen heiß___ Tee.", a:["er","es","e","en"], c:3},
     {q:"\"Entschuldigung, ___ ich hier kurz das Fenster öffnen?\"", a:["darf","muss","will","soll"], c:0},
-    // B1 (21-30)
+    // B1 (20-29)
     {q:"Das Haus ___ im Jahr 1990 fertig gebaut.", a:["wurde","hat","war","wird"], c:0},
     {q:"Wenn ich Zeit ___, helfe ich dir beim Umzug.", a:["habe","hätte","hatte","würde"], c:0},
     {q:"Ich habe mein Portemonnaie vergessen, ___ kaufe ich es nicht.", a:["trotzdem","deshalb","weil","obwohl"], c:1},
@@ -123,7 +128,7 @@ const quizData = [
     {q:"Je mehr ich lerne, ___ verstehe ich die Grammatik.", a:["umso viel","desto viel","als mehr","desto mehr"], c:3},
     {q:"\"Wann kommst du?\" – \"Ich komme ___ Montag.\"", a:["am","im","an","um"], c:0},
     {q:"\"___ Sie bitte so nett und helfen mir?\"", a:["Sind","Wären","Seien","Hätten"], c:2},
-    // B2 (31-40)
+    // B2 (30-39)
     {q:"Wir müssen endlich eine Entscheidung ___.", a:["machen","treffen","tun","geben"], c:1},
     {q:"Wenn du früher gekommen ___, hätten wir uns gesehen.", a:["wärst","bist","warst","hättest"], c:0},
     {q:"Zu Hause ___, legte er sich sofort schlafen.", a:["ankommend","ankommen","angekommen","Ankunft"], c:2},
@@ -134,22 +139,23 @@ const quizData = [
     {q:"Ich rate dir ___, dich rechtzeitig zu bewerben.", a:["dafür","darum","davon","dazu"], c:3},
     {q:"Die ___ Sonne am Morgen war herrlich.", a:["scheinende","geschienene","scheinend","scheinen"], c:0},
     {q:"\"Kommst du mit?\" – \"Das kommt ___ an.\"", a:["darüber","darauf","daran","davon"], c:1},
-    // C1 (41-50)
+    // C1 (40-49)
     {q:"Der ___ der Umwelt sollte oberste Priorität haben.", a:["Schutz","Schützen","Schützer","Schützung"], c:0},
     {q:"Der Zeuge sagte aus, er ___ den Täter nicht gesehen.", a:["hat","habe","hätte","hab"], c:1},
     {q:"Er hat das Studium ___ gesundheitlichen Gründen abgebrochen.", a:["wegen","durch","aus","infolge"], c:2},
     {q:"Ein ___ Problem verzögerte die gesamte Planung.", a:["unvorhergesehenes","unvorhergesehene","unvorhergesehenen","unvorhergesehener"], c:0},
     {q:"Ich mag ___ Tee ___ Kaffee, ich trinke nur Wasser.", a:["entweder...oder","weder...noch","sowohl...als auch","nicht nur...sondern"], c:1},
     {q:"___ des heftigen Regens blieben wir zu Hause.", a:["Trotz","Ohne","Aufgrund","Während"], c:2},
-    {q:"Sie hat die schwierige Prüfung mit Bravour ___.", a:["bestanden","gemacht","geschafft","erfolgt"], c:0},
+    {q:"Sie hat die Prüfung mit Bravour ___.", a:["bestanden","gemacht","geschafft","erfolgt"], c:0},
     {q:"Ich ___ dich ja gerne begleiten, aber ich muss arbeiten.", a:["werde","soll","bin","würde"], c:3},
     {q:"Die ___ Kosten übersteigen unser Budget.", a:["anfallenden","kommenden","machenden","gehenden"], c:0},
     {q:"In Bezug ___ Ihr Schreiben...", a:["auf","zu","mit","für"], c:0}
 ];
 
 let currentIdx = 0, score = 0, time = 1800, timerInterval;
-let levelScore = 0, consecutiveWrong = 0;
+let levelScore = 0, levelWrong = 0;
 const levels = ["A1", "A2", "B1", "B2", "C1"];
+let finalLevel = "A0 (Anfänger)";
 
 function startTest() {
     document.getElementById("cover").style.display = "none";
@@ -158,15 +164,16 @@ function startTest() {
     timerInterval = setInterval(() => {
         let m = Math.floor(time/60), s = time%60;
         document.getElementById("timer").innerText = `${m}:${s<10?'0':''}${s}`;
-        if(time <= 0) endTest("Time Out");
+        if(time <= 0) endTest();
         time--;
     }, 1000);
 }
 
 function renderQuestion() {
     const q = quizData[currentIdx];
-    document.getElementById("level-indicator").innerText = `Niveau: ${levels[Math.floor(currentIdx/10)]}`;
-    document.getElementById("qnum").innerText = `Frage ${currentIdx+1}/50`;
+    const levelIdx = Math.floor(currentIdx / 10);
+    document.getElementById("level-indicator").innerText = `Level: ${levels[levelIdx]}`;
+    document.getElementById("qnum").innerText = `Question ${currentIdx+1}/50`;
     document.getElementById("question").innerText = q.q;
     let html = "";
     q.a.forEach((ans, i) => {
@@ -176,25 +183,43 @@ function renderQuestion() {
 }
 
 function processAnswer(idx) {
-    if(idx === quizData[currentIdx].c) { score++; levelScore++; consecutiveWrong = 0; }
-    else { consecutiveWrong++; }
-    
-    if(consecutiveWrong >= 6) return endTest("6 wrong answers in a row");
-    
-    currentIdx++;
-    if(currentIdx % 10 === 0) {
-        if(levelScore < 5) return endTest("Level failed");
-        levelScore = 0;
+    const currentLevelIdx = Math.floor(currentIdx / 10);
+
+    if(idx === quizData[currentIdx].c) {
+        score++;
+        levelScore++;
+    } else {
+        levelWrong++;
     }
-    if(currentIdx >= 50) return endTest("Test completed");
+
+    // Rule 1: End if 2 wrong answers in one level
+    if(levelWrong >= 2) {
+        return endTest();
+    }
+
+    currentIdx++;
+
+    // Rule 2: Level completion check
+    if(currentIdx > 0 && currentIdx % 10 === 0) {
+        if(levelScore >= 6) {
+            finalLevel = levels[currentLevelIdx];
+            levelScore = 0; 
+            levelWrong = 0;
+        } else {
+            return endTest();
+        }
+    }
+
+    if(currentIdx >= 50) return endTest();
     renderQuestion();
 }
 
-function endTest(reason) {
+function endTest() {
     clearInterval(timerInterval);
     document.getElementById("quiz").style.display = "none";
     document.getElementById("result").style.display = "block";
-    document.getElementById("final-level").innerText = levels[Math.max(0, Math.floor((currentIdx-1)/10))];
+    
+    document.getElementById("final-level").innerText = finalLevel;
     document.getElementById("res-score").innerText = `${score}/50`;
     document.getElementById("res-total").innerText = currentIdx;
 }
