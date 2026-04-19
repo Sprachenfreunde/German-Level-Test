@@ -56,7 +56,7 @@
             <div class="rule-title">Test Rules:</div>
             <ul class="rule-list">
                 <li>5 Levels (A1 to C1), 10 questions per level.</li>
-                <li><strong>Auto-Stop:</strong> Test ends if you get 2 wrong answers in a single level.</li>
+                <li><strong>Auto-Stop:</strong> Test ends if you get 4 wrong answers in a single level.</li>
                 <li><strong>Level Certification:</strong> Min. 6 correct answers required to pass a level.</li>
                 <li><strong>Time Limit:</strong> Max. 30 minutes.</li>
             </ul>
@@ -93,7 +93,6 @@
 </div>
 
 <script>
-// Quiz data (German only)
 const quizData = [
     // A1 (0-9)
     {q:"Hallo, ich ___ Max.", a:["bist","bin","ist","sind"], c:1},
@@ -101,7 +100,7 @@ const quizData = [
     {q:"Das ist ___ Apfel.", a:["eine","en","einem","ein"], c:3},
     {q:"Wir ___ gern Pizza.", a:["essen","esst","isst","esse"], c:0},
     {q:"Wie spät ist es? (08:30)", a:["halb acht","halb neun","acht Uhr","neun Uhr"], c:1},
-    {q:"\"Hast du ein Auto?\" – \"Nein, ich habe ___ Auto.\"", a:["nicht","keine","kein","kein habe"], c:2},
+    {q:"\"Hast du ein Auto?\" – \"Nein, ich habe ___ Auto.\"", a:["nicht","keine","kein","keiner"], c:2},
     {q:"Das ist mein Bruder. ___ Name ist Paul.", a:["Sein","Ihr","Mein","Dein"], c:0},
     {q:"Heute ___ ich ins Kino.", a:["gehen","gehst","geht","gehe"], c:3},
     {q:"Ich fahre ___ dem Zug zur Arbeit.", a:["bei","mit","zu","in"], c:1},
@@ -109,7 +108,7 @@ const quizData = [
     // A2 (10-19)
     {q:"Ich ___ gut Deutsch sprechen, weil ich viel gelernt habe.", a:["muss","will","kann","darf"], c:2},
     {q:"Gestern ___ ich schon früh nach Hause gegangen.", a:["habe","bin","war","hatte"], c:1},
-    {q:"Mein Bruder ist 1,90 m. Er ist ___ als ich.", a:["größer","groß","am größten","am großsten"], c:0},
+    {q:"Mein Bruder ist 1,90 m. Er ist ___ als ich.", a:["größer","groß","am größten","am höchsten"], c:0},
     {q:"Ich ___ jeden Morgen um 7 Uhr ___.", a:["aufstehe","stehe auf","stehe … auf","auf stehe"], c:2},
     {q:"Das ist der Mann, ___ ich gestern gesehen habe.", a:["der","den","dem","dessen"], c:1},
     {q:"Ich bin müde, ___ ich die ganze Nacht gearbeitet habe.", a:["denn","aber","deshalb","weil"], c:3},
@@ -192,14 +191,14 @@ function processAnswer(idx) {
         levelWrong++;
     }
 
-    // Rule 1: End if 2 wrong answers in one level
-    if(levelWrong >= 2) {
+    // Rule 1: Auto-stop at 4th wrong answer within a level
+    if(levelWrong >= 4) {
         return endTest();
     }
 
     currentIdx++;
 
-    // Rule 2: Level completion check
+    // Rule 2: Level completion check (Pass if 6 or more correct)
     if(currentIdx > 0 && currentIdx % 10 === 0) {
         if(levelScore >= 6) {
             finalLevel = levels[currentLevelIdx];
